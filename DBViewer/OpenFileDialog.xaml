@@ -1,0 +1,55 @@
+﻿<ui:ContentDialog 
+    x:Class="DBViewer.OpenFileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:local="clr-namespace:DBViewer"
+    mc:Ignorable="d"
+    d:DesignHeight="700"
+    d:DesignWidth="500"
+    x:Name="openFileDialog"
+    Style="{StaticResource ScrollableContentDialogStyle}"
+    Title="Open Options"
+    PrimaryButtonText="Continue"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryButtonClick"
+    CloseButtonClick="OnCloseButtonClick"
+    Closed="OnClosed">
+    <ui:SimpleStackPanel Spacing="12">
+        <TextBlock 
+            Text="File:" 
+            Style="{StaticResource SubtitleTextBlockStyle}"
+            FontSize="18"/>
+        <TextBlock
+            Text="{Binding Path=FileName}"
+            Style="{StaticResource CaptionTextBlockStyle}"/>
+        <CheckBox
+            Content="Create if missing"/>
+        <Expander
+            x:Name="expander"
+            Header="Advanced Options"
+            ExpandDirection="Down"
+            IsExpanded="False"
+            VerticalAlignment="Top">
+            <ui:SimpleStackPanel Spacing="12" Margin="0,12,0,0">
+                <CheckBox
+                    Content="Paranoid checks"/>
+                <ui:NumberBox
+                    Header="Write Buffer Size (bytes)"
+                    Value="4194304"
+                    AcceptsExpression="True"/>
+                <ui:NumberBox
+                    Header="Max Open Files"
+                    Value="1000"
+                    AcceptsExpression="True"/>
+                <ui:NumberBox
+                    Header="Block Size (bytes)"
+                    Value="4096"
+                    AcceptsExpression="True"/>
+            </ui:SimpleStackPanel>
+        </Expander>
+    </ui:SimpleStackPanel>
+</ui:ContentDialog>

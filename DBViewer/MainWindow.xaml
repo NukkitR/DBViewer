@@ -1,0 +1,130 @@
+﻿<Window x:Class="DBViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DBViewer"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        mc:Ignorable="d"
+        Title="DBViewer" Height="750" Width="1000">
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Menu>
+                <MenuItem
+                    x:Name="openFileMenu"
+                    Header="Open"
+                    MenuItem.Click="OnMenuOpenClick"/>
+            </Menu>
+            <Rectangle
+                Stroke="{DynamicResource GridViewHeaderItemDividerStroke}"
+                StrokeThickness="0.5"
+                Height="1"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Stretch"/>
+        </Grid>
+        <DockPanel
+            Grid.Row="1"
+            Background="{DynamicResource NavigationViewExpandedPaneBackground}">
+            <!--QueryIcon="Find"-->
+            <ui:AutoSuggestBox
+                x:Name="searchBox"
+                DockPanel.Dock="Top"
+                Margin="12"
+                PlaceholderText="Search"
+                QuerySubmitted="OnControlsSearchBoxQuerySubmitted"
+                TextChanged="OnControlsSearchBoxTextChanged">
+            </ui:AutoSuggestBox>
+
+            <TreeView
+                x:Name="treeView"
+                ItemsSource="{Binding Path=keysDataSource}">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem" BasedOn="{StaticResource DefaultTreeViewItemStyle}">
+                        <Setter Property="IsExpanded" Value="True" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </DockPanel>
+
+        <ui:SimpleStackPanel
+            Grid.Row="1"
+            Grid.Column="1" 
+            Margin="24,20">
+            <TextBlock
+                Text="Details"
+                Style="{StaticResource TitleTextBlockStyle}"
+                FontSize="28"
+                Margin="0,12,0,12" />
+            <GroupBox Header="Key">
+                <Border
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                    BorderThickness="1">
+                    <ui:SimpleStackPanel
+                        Margin="12">
+                        <ui:RadioButtons
+                        x:Name="keyTypeRadioButtons"
+                        MaxColumns="2">
+                            <RadioButton
+                            Content="As Bytes"
+                            IsChecked="True" />
+                            <RadioButton Content="As String" />
+                        </ui:RadioButtons>
+
+                        <TextBox
+                            x:Name="keyTextBox"
+                            IsReadOnly="True"
+                            Height="48"
+                            ui:ControlHelper.PlaceholderText="..."
+                            Margin="0,8,0,0" />
+                    </ui:SimpleStackPanel>
+                </Border>
+            </GroupBox>
+
+            <GroupBox Header="Value">
+                <Border
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                    BorderThickness="1">
+                    <ui:SimpleStackPanel
+                        Margin="12">
+                        <ui:RadioButtons
+                        x:Name="valueTypeRadioButtons"
+                        MaxColumns="3">
+                            <RadioButton
+                            Content="As Bytes"
+                            IsChecked="True" />
+                            <RadioButton Content="As String" />
+                            <RadioButton Content="As NBT" IsEnabled="False"/>
+                        </ui:RadioButtons>
+
+                        <TextBox
+                            x:Name="valueTextBox"
+                            IsReadOnly="True"
+                            Height="256"
+                            ui:ControlHelper.PlaceholderText="..."
+                            Margin="0,8,0,0" />
+                    </ui:SimpleStackPanel>
+                </Border>
+            </GroupBox>
+        </ui:SimpleStackPanel>
+    </Grid>
+
+</Window>
