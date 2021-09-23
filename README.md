@@ -21,6 +21,6 @@ A simple viewer written in c# to read the LevelDB database created by Minecraft:
 ![Open Options](https://github.com/NukkitReborn/DBViewer/raw/master/Screenshots/3.png)
 
 ## Credits
-- [level-db-sharp](https://github.com/meebey/leveldb-sharp) and [papyruscs](https://github.com/papyrus-mc/papyruscs) for a modified version of leveldb-sharp.
+- [leveldb-sharp](https://github.com/meebey/leveldb-sharp) and [papyruscs](https://github.com/papyrus-mc/papyruscs) for a modified version of leveldb-sharp.
 - [leveldb-mcpe](https://github.com/Mojang/leveldb-mcpe) for the leveldb native library for windows64.
 - [fNbt](https://github.com/mstefarov/fNbt) for Nbt reading support.
