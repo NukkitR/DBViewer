@@ -66,16 +66,17 @@
             </TreeView>
         </DockPanel>
 
-        <ui:SimpleStackPanel
+        <DockPanel
             Grid.Row="1"
             Grid.Column="1"
             Margin="24,20">
             <TextBlock
                 Margin="0,12,0,12"
+                DockPanel.Dock="Top"
                 FontSize="28"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="Details" />
-            <GroupBox Header="Key">
+            <GroupBox DockPanel.Dock="Top" Header="Key">
                 <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1">
                     <ui:SimpleStackPanel Margin="12">
                         <ui:RadioButtons
@@ -102,9 +103,10 @@
 
             <GroupBox Header="Value">
                 <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1">
-                    <ui:SimpleStackPanel Margin="12">
+                    <DockPanel Margin="12">
                         <ui:RadioButtons
                             x:Name="valueTypeRadioButtons"
+                            DockPanel.Dock="Top"
                             MaxColumns="3"
                             SelectionChanged="OnRadioButtonChecked">
                             <RadioButton Content="As Bytes" IsChecked="True" />
@@ -114,7 +116,6 @@
 
                         <TextBox
                             x:Name="valueTextBox"
-                            Height="256"
                             Margin="0,8,0,0"
                             ui:ControlHelper.PlaceholderText="..."
                             FontFamily="Consolas"
@@ -122,10 +123,10 @@
                             IsReadOnly="True"
                             TextWrapping="Wrap"
                             VerticalScrollBarVisibility="Auto" />
-                    </ui:SimpleStackPanel>
+                    </DockPanel>
                 </Border>
             </GroupBox>
-        </ui:SimpleStackPanel>
+        </DockPanel>
     </Grid>
 
 </Window>

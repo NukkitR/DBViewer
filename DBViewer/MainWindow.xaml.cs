@@ -272,7 +272,7 @@ namespace DBViewer
             switch (valueTypeRadioButtons.SelectedIndex)
             {
                 case 0:
-                    valueTextBox.Text = hexDump(currentValue);
+                    valueTextBox.Text = HexUtil.prettyHexDump(currentValue);
                     break;
                 case 1:
                     valueTextBox.Text = asString(currentValue);

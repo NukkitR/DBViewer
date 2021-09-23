@@ -105,6 +105,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChunkPos.cs" />
+    <Compile Include="HexUtil.cs" />
     <Compile Include="KeyItem.cs" />
     <Compile Include="leveldb-sharp\Cache.cs" />
     <Compile Include="leveldb-sharp\CompressionType.cs" />
