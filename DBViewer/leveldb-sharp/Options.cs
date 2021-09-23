@@ -31,13 +31,14 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.ComponentModel;
 
 namespace LevelDB
 {
     /// <summary>
     /// DB options
     /// </summary>
-    public class Options
+    public class Options : INotifyPropertyChanged
     {
 #pragma warning disable 414
         Cache f_BlockCache;
@@ -51,28 +52,47 @@ namespace LevelDB
         // TODO:
         // const Comparator* comparator;
 
+        private bool createIfMissing = false;
         /// <summary>
         /// If true, the database will be created if it is missing.
         /// Default: false
         /// </summary>
         // bool create_if_missing;
-        public bool CreateIfMissing {
-            set {
+        public bool CreateIfMissing
+        {
+            set
+            {
                 Native.leveldb_options_set_create_if_missing(Handle, value);
+                createIfMissing = value;
+                OnPropertyChanged("CreateIfMissing");
+            }
+            get
+            {
+                return createIfMissing;
             }
         }
 
+        private bool errorIfExists = false;
         /// <summary>
         /// If true, an error is raised if the database already exists.
         /// Default: false
         /// </summary>
         // bool error_if_exists;
-        public bool ErrorIfExists {
-            set {
+        public bool ErrorIfExists
+        {
+            set
+            {
                 Native.leveldb_options_set_error_if_exists(Handle, value);
+                errorIfExists = value;
+                OnPropertyChanged("ErrorIfExists");
+            }
+            get
+            {
+                return errorIfExists;
             }
         }
 
+        private bool paranoidChecks = false;
         /// <summary>
         /// If true, the implementation will do aggressive checking of the
         /// data it is processing and will stop early if it detects any
@@ -82,9 +102,17 @@ namespace LevelDB
         /// Default: false
         /// </summary>
         // bool paranoid_checks;
-        public bool ParanoidChecks {
-            set {
+        public bool ParanoidChecks
+        {
+            set
+            {
                 Native.leveldb_options_set_paranoid_checks(Handle, value);
+                paranoidChecks = value;
+                OnPropertyChanged("ParanoidChecks");
+            }
+            get
+            {
+                return paranoidChecks;
             }
         }
 
@@ -92,6 +120,7 @@ namespace LevelDB
         // Env* env;
         // Logger* info_log;
 
+        private int writeBufferSize = 4 << 20;
         /// <summary>
         /// Amount of data to build up in memory (backed by an unsorted log
         /// on disk) before converting to a sorted on-disk file.
@@ -105,12 +134,21 @@ namespace LevelDB
         /// Default: 4MB
         /// </summary>
         // size_t write_buffer_size;
-        public int WriteBufferSize {
-            set {
+        public int WriteBufferSize
+        {
+            set
+            {
                 Native.leveldb_options_set_write_buffer_size(Handle, value);
+                writeBufferSize = value;
+                OnPropertyChanged("WriteBufferSize");
+            }
+            get
+            {
+                return writeBufferSize;
             }
         }
 
+        private int maxOpenFiles = 1000;
         /// <summary>
         /// Number of open files that can be used by the DB.  You may need to
         /// increase this if your database has a large working set (budget
@@ -118,9 +156,17 @@ namespace LevelDB
         /// Default: 1000
         /// </summary>
         // int max_open_files;
-        public int MaxOpenFiles {
-            set {
+        public int MaxOpenFiles
+        {
+            set
+            {
                 Native.leveldb_options_set_max_open_files(Handle, value);
+                maxOpenFiles = value;
+                OnPropertyChanged("MaxOpenFiles");
+            }
+            get
+            {
+                return maxOpenFiles;
             }
         }
 
@@ -133,18 +179,24 @@ namespace LevelDB
         /// Default: NULL
         /// </summary>
         // Cache* block_cache;
-        public Cache BlockCache {
-            set {
+        public Cache BlockCache
+        {
+            set
+            {
                 // keep a reference to Cache so it doesn't get GCed
                 f_BlockCache = value;
-                if (value == null) {
+                if (value == null)
+                {
                     Native.leveldb_options_set_cache(Handle, IntPtr.Zero);
-                } else {
+                }
+                else
+                {
                     Native.leveldb_options_set_cache(Handle, value.Handle);
                 }
             }
         }
 
+        private int blockSize = 4 * 1024;
         /// <summary>
         /// Approximate size of user data packed per block.  Note that the
         /// block size specified here corresponds to uncompressed data.  The
@@ -154,9 +206,17 @@ namespace LevelDB
         /// Default: 4K
         /// </summary>
         // size_t block_size;
-        public int BlockSize {
-            set {
+        public int BlockSize
+        {
+            set
+            {
                 Native.leveldb_options_set_block_size(Handle, value);
+                blockSize = value;
+                OnPropertyChanged("BlockSize");
+            }
+            get
+            {
+                return blockSize;
             }
         }
 
@@ -167,12 +227,15 @@ namespace LevelDB
         /// Default: 16
         /// </summary>
         // int block_restart_interval;
-        public int BlockRestartInterval {
-            set {
+        public int BlockRestartInterval
+        {
+            set
+            {
                 Native.leveldb_options_set_write_buffer_size(Handle, value);
             }
         }
 
+        private CompressionType compression = CompressionType.ZlibRaw;
         /// <summary>
         /// Each block is individually compressed before being written to
         /// persistent storage. Compression is on by default since the default
@@ -183,9 +246,17 @@ namespace LevelDB
         /// Default: SnappyCompression
         /// </summary>
         // CompressionType compression;
-        public CompressionType Compression {
-            set {
-                Native.leveldb_options_set_compression(Handle, (int) value);
+        public CompressionType Compression
+        {
+            set
+            {
+                Native.leveldb_options_set_compression(Handle, (int)value);
+                compression = value;
+                OnPropertyChanged("Compression");
+            }
+            get
+            {
+                return compression;
             }
         }
 
@@ -197,6 +268,12 @@ namespace LevelDB
         ~Options()
         {
             Native.leveldb_options_destroy(Handle);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

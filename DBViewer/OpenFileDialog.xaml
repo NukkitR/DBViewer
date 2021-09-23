@@ -1,54 +1,62 @@
-﻿<ui:ContentDialog 
+﻿<ui:ContentDialog
     x:Class="DBViewer.OpenFileDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DBViewer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.modernwpf.com/2019"
-    xmlns:local="clr-namespace:DBViewer"
-    mc:Ignorable="d"
+    x:Name="openFileDialog"
+    Title="Open Options"
     d:DesignHeight="700"
     d:DesignWidth="500"
-    x:Name="openFileDialog"
-    Style="{StaticResource ScrollableContentDialogStyle}"
-    Title="Open Options"
-    PrimaryButtonText="Continue"
+    CloseButtonClick="OnCloseButtonClick"
     CloseButtonText="Cancel"
+    Closed="OnClosed"
     DefaultButton="Primary"
     PrimaryButtonClick="OnPrimaryButtonClick"
-    CloseButtonClick="OnCloseButtonClick"
-    Closed="OnClosed">
+    PrimaryButtonText="Continue"
+    Style="{StaticResource ScrollableContentDialogStyle}"
+    mc:Ignorable="d">
     <ui:SimpleStackPanel Spacing="12">
-        <TextBlock 
-            Text="File:" 
-            Style="{StaticResource SubtitleTextBlockStyle}"
-            FontSize="18"/>
-        <TextBlock
-            Text="{Binding Path=FileName}"
-            Style="{StaticResource CaptionTextBlockStyle}"/>
+        <TextBlock FontSize="14" Text="File:" />
+        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{Binding Path=FileName}" />
+        <ComboBox
+            x:Name="comboBox"
+            HorizontalAlignment="Stretch"
+            ui:ControlHelper.Header="Compression Type"
+            DataContext="{Binding Path=Options}"
+            SelectedItem="{Binding Path=Compression}" />
         <CheckBox
-            Content="Create if missing"/>
+            Content="Create if missing"
+            DataContext="{Binding Path=Options}"
+            IsChecked="{Binding Path=CreateIfMissing, Mode=TwoWay}" />
         <Expander
             x:Name="expander"
-            Header="Advanced Options"
+            VerticalAlignment="Top"
             ExpandDirection="Down"
-            IsExpanded="False"
-            VerticalAlignment="Top">
-            <ui:SimpleStackPanel Spacing="12" Margin="0,12,0,0">
+            Header="Advanced Options"
+            IsExpanded="False">
+            <ui:SimpleStackPanel Margin="0,12,0,0" Spacing="12">
                 <CheckBox
-                    Content="Paranoid checks"/>
+                    Content="Paranoid checks"
+                    DataContext="{Binding Path=Options}"
+                    IsChecked="{Binding Path=ParanoidChecks, Mode=TwoWay}" />
                 <ui:NumberBox
+                    AcceptsExpression="True"
+                    DataContext="{Binding Path=Options}"
                     Header="Write Buffer Size (bytes)"
-                    Value="4194304"
-                    AcceptsExpression="True"/>
+                    Value="{Binding Path=WriteBufferSize, Mode=TwoWay}" />
                 <ui:NumberBox
+                    AcceptsExpression="True"
+                    DataContext="{Binding Path=Options}"
                     Header="Max Open Files"
-                    Value="1000"
-                    AcceptsExpression="True"/>
+                    Value="{Binding Path=MaxOpenFiles, Mode=TwoWay}" />
                 <ui:NumberBox
+                    AcceptsExpression="True"
+                    DataContext="{Binding Path=Options}"
                     Header="Block Size (bytes)"
-                    Value="4096"
-                    AcceptsExpression="True"/>
+                    Value="{Binding Path=BlockSize, Mode=TwoWay}" />
             </ui:SimpleStackPanel>
         </Expander>
     </ui:SimpleStackPanel>

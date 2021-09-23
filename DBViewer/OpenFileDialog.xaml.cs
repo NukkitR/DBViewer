@@ -1,4 +1,5 @@
-﻿using ModernWpf.Controls;
+﻿using LevelDB;
+using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,14 +22,21 @@ namespace DBViewer
     {
 
         private string fileName;
+        public Options Options { get; set; }
 
         public OpenFileDialog()
         {
             InitializeComponent();
             DataContext = this;
+            Options = new Options()
+            {
+                Compression = CompressionType.ZlibRaw
+            };
+            comboBox.ItemsSource = Enum.GetValues(typeof(CompressionType)).Cast<CompressionType>();
         }
 
-        public string FileName {
+        public string FileName
+        {
             get { return fileName; }
             set
             {
@@ -62,9 +70,7 @@ namespace DBViewer
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
